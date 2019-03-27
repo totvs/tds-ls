@@ -1,0 +1,19 @@
+{
+  "name": "@totvs/tds-da",
+  "version": "1.0.4",
+  "description": "Totvs Debug Adapter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/totvs/tds-da.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "TOTVS S.A.",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/totvs/tds-da/issues"
+  },
+  "homepage": "https://github.com/totvs/tds-da#readme",
+  "main": "index.js"
+}
