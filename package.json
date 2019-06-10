@@ -1,6 +1,6 @@
 {
   "name": "@totvs/tds-da",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Totvs Debug Adapter",
   "repository": {
     "type": "git",
