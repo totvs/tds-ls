@@ -15,5 +15,6 @@
     "url": "https://github.com/totvs/tds-ls/issues"
   },
   "homepage": "https://github.com/totvs/tds-ls#readme",
-  "main": "index.js"
+  "main": "index.js",
+  "types": "index.d.ts"
 }
