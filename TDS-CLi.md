@@ -15,7 +15,9 @@ Uma das vantagens do uso do **TDS CLi** através do arquivo de parametrização 
 Para executar o **TDS LS CLi** em modo de compatibilidade com o antigo **tdscli** execute o *script tdscli* específico para seu sistema operacional.
 
 > Windows: `> tdscli.bat <ação> <parâmetros_da_ação>`
+
 > Linux: `> ./tdscli.sh <ação> <parâmetros_da_ação>`
+
 > Mac OS: `> ./tdscli.sh <ação> <parâmetros_da_ação>`
 
 Veja maiores detalhes na seção [Compatibilidade (legado)](#compatibilidade_legado) abaixo.
