@@ -18,4 +18,6 @@ CALL %LS% %DEBUG_LOG% --tdsCliArguments="%ARGS%"
 
 IF "%DEBUG%"=="1" IF %ERRORLEVEL% NEQ 0 echo TDS CLi errorcode [%ERRORLEVEL%]
 
+exit %ERRORLEVEL%
+
 ENDLOCAL

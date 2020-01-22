@@ -1,6 +1,6 @@
 # TDS LS CLi
 
-O **CLi** (abreviação para Command Line) é a nova implementação do **tdscli**, já conhecido dos usuários do **TDS**, e que utiliza o **TDS LS** para executar as operações nos *AppServers* da **TOTVS**.
+O **CLi** (abreviação para Command Line) é a nova implementação do **tdscli**, já conhecido dos usuários do **TDS**, e que utiliza o **TDS LS** para executar as operações nos *AppServers* da **TOTVS** por linha de comando (command line).
 
 ## Uso padrão
 
@@ -10,6 +10,16 @@ Para executar o **TDS LS CLi** é necessária a criação de um arquivo de param
 
 Uma das vantagens do uso do **TDS CLi** através do arquivo de parametrização é a possibilidade de execução de diversas ações sequencialmente em apenas um script de execução. Por exemplo, em um script podemos definir que o **TDS CLi** realizará a conexão com o *AppServer* em seguida desfragmentará do *RPO*, compilará uma lista de programas, gerará um *patch* com os programas compilados anteriormente e pode realizar novamente a desfragmentação do *RPO* para finalizar, tudo isso em apenas uma operação.
 
+## Uso em modo de compatibilidade
+
+Para executar o **TDS LS CLi** em modo de compatibilidade com o antigo **tdscli** execute o *script tdscli* específico para seu sistema operacional.
+
+> Windows: `> tdscli.bat <ação> <parâmetros_da_ação>`
+> Linux: `> ./tdscli.sh <ação> <parâmetros_da_ação>`
+> Mac OS: `> ./tdscli.sh <ação> <parâmetros_da_ação>`
+
+Veja maiores detalhes na seção [Compatibilidade (legado)](#compatibilidade_legado) abaixo.
+
 ### Arquivo de parametrização
 
 O arquivo pode ser criado com qualquer nome e pode ser composto de diversas seções que executarão as distintas tarefas.
@@ -17,6 +27,8 @@ O arquivo pode ser criado com qualquer nome e pode ser composto de diversas seç
 > As linhas iniciadas por `#` ou `;` são consideradas como comentários e serão desconsideradas.
 
 Para definir uma seção inicie uma nova linha com a descrição ou nome da seção entre `[]`, como por exemplo, `[nova seção]`. Existem duas seções reservadas que são tratadas de forma especial, a seção `geral`, que são todos os parâmetros definidos antes da primeira seção, e a seção `[user]`.
+
+> A maioria das ações dependem da conexão com o *AppServer*, logo crie a seção com a ação `authentication` no início do *script*.
 
 #### Exemplo
 
@@ -60,6 +72,13 @@ fileResourceList = ${OUTPUT}
 patchType = PTM
 saveLocal = T:\tdscli\patches
 ```
+## Caminhos relativos ou absolutos
+
+Sempre dê preferência ao uso de caminhos absolutos para evitar confusões sobre quais arquivos/diretórios estão sendo utilizados.
+
+> Utilize a barra `/` como separador de diretórios independentemente do sistema operacional.
+
+> No **Linux** utilize apenas caracteres minúsculos e não utilize acentuação em toda a sua composição, i.e., inclusive sub-diretórios e nome do arquivo.
 
 ## Parâmetros gerais
 
@@ -144,6 +163,8 @@ Resposta:
 | 0              | Sucesso          |
 | -1             | Erro na execução |
 
+> Se for executar uma compilação que necessite do uso da **chave de compilação** crie uma seção com a ação `authorization` antes desta seção.
+
 ### `action = patchGen`
 
 Realiza a geração do patch conforme os recursos indicados.
@@ -220,6 +241,8 @@ Resposta:
 | 0              | Sucesso          |
 | -1             | Erro na execução |
 
+> Se for executar uma remoção que necessite do uso da **chave de compilação** crie uma seção com a ação `authorization` antes desta seção.
+
 ### `action = defragRPO`
 
 Realiza a desfragmentação do RPO no ambiente conectado.
@@ -262,3 +285,53 @@ Resposta:
 | -1             | Erro na execução |
 
 > Em caso de erro na carga do arquivo, confirme se o ID da chave de compilação que você tem é o mesmo informado pela ação **getID**.
+
+## <a name="compatibilidade_legado"></a>Compatibilidade (legado)
+
+A compatibilidade com o antigo **tdscli** (legado) se dá através de um script (batch/bash) que aceita os mesmos parâmetros no formato antigo do **tdscli**.
+
+`> tdscli.bat <acao> <parametro_da_acao_1> <parametro_da_acao_2> <parametro_da_acao_3>...`
+`> tdscli.bat <acao> @parametros_da_acao.txt`
+
+Os parâmetros obrigatórios dependem da ação a ser executada, porém em todas as ações os parâmetros da conexão definidas pela ação `authentication` devem ser informadas.
+
+> Neste modo de compatibilidade apenas uma ação é executada em cada chamada na linha de comando
+
+#### Exemplo de uma execução de uma ação legada (compile)
+
+`> tdscli.bat compile serverType=AdvPL server=localhost port=1234 build=7.00.170117A environment=env user=user psw=pass includes=D:/servers/protheus/includes program=D:/fontes/advpl/prg_0001.prw;D:/fontes/advpl/prg_0002.prw;D:/fontes/advpl/prg_0003.prw authorization=D:/chave_compilacao/chave.aut recompile=t`
+
+#### Exemplo de um arquivo de parâmetros legado (compile)
+
+```ini
+;
+;compile.txt
+;
+
+;Exemplo de arquivo de parametrização para o TDS CLi (legado)
+
+;parametros da acao authentication
+serverType=AdvPL
+server=localhost
+port=1234
+build=7.00.170117A
+user=user
+psw=pass
+environment=env
+
+;parametros da acao compile
+includes=D:/servers/protheus/includes
+program=D:/fontes/advpl/prg_0001.prw;D:/fontes/advpl/prg_0002.prw;D:/fontes/advpl/prg_0003.prw
+authorization=D:/chave_compilacao/chave.aut
+recompile=t
+```
+
+Execute a linha de comando, a seguir, para realizar a ação (compile) passando o arquivo de parâmetros (compile.txt):
+
+`> tdscli.bat compile @compile.txt`
+
+#### Uso da chave de compilação no modo legado
+
+Para utilizar a **chave de compilação** no modo legado utilize o parâmetro `authorization`, nas ações que necessitem do uso da chave, passando o arquivo `.aut` com as informações de sua chave de compilação.
+
+> A **chave de compilação** do **TDS Eclipse** não é compatível com o **TDS VS Code**, pois os `IDs` utilizados em cada plataforma são diferentes.
