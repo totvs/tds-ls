@@ -12,15 +12,7 @@ Uma das vantagens do uso do **TDS CLi** através do arquivo de parametrização 
 
 ## Uso em modo de compatibilidade
 
-Para executar o **TDS LS CLi** em modo de compatibilidade com o antigo **tdscli** execute o *script tdscli* específico para seu sistema operacional.
-
-> Windows: `> tdscli.bat <ação> <parâmetros_da_ação>`
-
-> Linux: `> ./tdscli.sh <ação> <parâmetros_da_ação>`
-
-> Mac OS: `> ./tdscli.sh <ação> <parâmetros_da_ação>`
-
-Veja maiores detalhes na seção [Compatibilidade (legado)](#compatibilidade_legado) abaixo.
+Para executar o **TDS LS CLi** em modo de compatibilidade com o antigo **tdscli** veja a seção [Compatibilidade (legado)](#compatibilidade_legado) abaixo.
 
 ### Arquivo de parametrização
 
@@ -298,6 +290,14 @@ A compatibilidade com o antigo **tdscli** (legado) se dá através de um script 
 Os parâmetros obrigatórios dependem da ação a ser executada, porém em todas as ações os parâmetros da conexão definidas pela ação `authentication` devem ser informadas.
 
 > Neste modo de compatibilidade apenas uma ação é executada em cada chamada na linha de comando
+
+Execute o *script tdscli* específico para seu sistema operacional.
+
+> Windows: `> tdscli.bat <ação> <parâmetros_da_ação>`
+
+> Linux: `> ./tdscli.sh <ação> <parâmetros_da_ação>`
+
+> Mac OS: `> ./tdscli.sh <ação> <parâmetros_da_ação>`
 
 #### Exemplo de uma execução de uma ação legada (compile)
 
