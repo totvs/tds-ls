@@ -2,7 +2,7 @@
 
 O **CLi** (abreviação para Command Line) é a nova implementação do **tdscli**, já conhecido dos usuários do **TDS**, e que utiliza o **TDS LS** para executar as operações nos *AppServers* da **TOTVS** por linha de comando (command line).
 
-## Uso padrão
+## Uso padrão (recomendado)
 
 Para executar o **TDS LS CLi** é necessária a criação de um arquivo de parametrização e executar o **CLi** passando este arquivo através do parâmetro `--tdsCli`.
 
