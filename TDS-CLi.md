@@ -8,6 +8,12 @@ Para executar o **TDS LS CLi** é necessária a criação de um arquivo de param
 
 > `> advpls --tdsCli=<param_file_path>`
 
+**Localização doas arquivos advpls**
+
+O binário do advpls esta disponível no diretório do plugin do TDS-VSCode, para os três Sistemas Operacionais homologados, sendo, Windows, Linux e MacOS. A imagem abaixo demonstra a estrutura da pasta.
+
+![Advpl-dir](https://github.com/totvs/tds-ls/blob/master/images/advpls_dirs.png)
+
 Uma das vantagens do uso do **TDS CLi** através do arquivo de parametrização é a possibilidade de execução de diversas ações sequencialmente em apenas um script de execução. Por exemplo, em um script podemos definir que o **TDS CLi** realizará a conexão com o *AppServer* em seguida desfragmentará do *RPO*, compilará uma lista de programas, gerará um *patch* com os programas compilados anteriormente e pode realizar novamente a desfragmentação do *RPO* para finalizar, tudo isso em apenas uma operação.
 
 ## Uso em modo de compatibilidade
