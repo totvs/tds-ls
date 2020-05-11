@@ -8,7 +8,7 @@ Para executar o **TDS LS CLi** é necessária a criação de um arquivo de param
 
 > `> advpls --tdsCli=<param_file_path>`
 
-**Localização doas arquivos advpls**
+**Localização do arquivo advpls**
 
 O binário do advpls esta disponível no diretório do plugin do TDS-VSCode, para os três Sistemas Operacionais homologados, sendo, Windows, Linux e MacOS. A imagem abaixo demonstra a estrutura da pasta.
 
