@@ -56,7 +56,7 @@ Ou poderá utilizar caminhos relativos ao diretório do seu arquivo de execuçã
 
 Prefira usar **caminhos absolutos**, garantindo a correta localização dos arquivos.
 
-Você pode utilizar barra **`/`** como separador de diretórios independentemente do seu sistema operacional.
+Você pode utilizar a barra **`/`** como separador de diretórios independentemente do seu sistema operacional.
 
 > A execução do TDSCli-LS no **Linux** deve respeitar as regras do *AppServer Protheus* para este sistema operacional, que são:
 * Utilize apenas **caracteres minúsculos** na composição do diretorio/arquivo.ext;
@@ -214,7 +214,7 @@ ID: ED75-E184
 
 Aplica a chave de compilação.
 
-> O **ID** do TDSCli-LS é diferente do TDSCLi-Eclipse, tornando as **chaves de compilação** incompatíveis entre as IDE's.
+> O **ID** do TDSCli-LS é diferente do TDSCLi-Eclipse, tornando as **chaves de compilação** incompatíveis.
 
 | Parâmetro     | Valor                                   | Descrição                                  |
 |---------------|-----------------------------------------|--------------------------------------------|
