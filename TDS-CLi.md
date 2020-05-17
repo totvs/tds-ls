@@ -226,7 +226,7 @@ action=authorization
 authorization=/home/mansano/tdscli/ED75-E184.aut
 ```
 
-> Em caso de erro na carga do arquivo, confirme o ID da estação utilizando a action **getID**.
+> Em caso de erro na carga do arquivo, confirme o ID da estação de trabalho, utilizando a action **getID**.
 
 ## `action = authentication`
 
