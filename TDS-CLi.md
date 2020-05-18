@@ -281,7 +281,7 @@ Executa a compilação/recompilação de programas no RPO.
 | program     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Programas a serem processados                                                     |
 | programList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**) |
 | recompile   | True (T) ou False (F)                                       | True se deve efetuar recompilação                                              |
-| includes    | Diretórios com includes separados por `,` ou `;`            | Arquivos de includes, **O caminho para os diretórios de include deve sempre se absoluto, ex: c:\dir\includes pois será utilizado pelo AppServer no momento da compilação**                                                              |
+| includes    | Diretórios com includes separados por `,` ou `;`            | Arquivos de includes, **O caminho para os diretórios de include deve sempre ser absoluto, ex: c:\dir\includes pois será utilizado pelo AppServer no momento da compilação**                                                              |
 
 > Informar a opção `program` ou `programList` **mas não ambas**.
 
