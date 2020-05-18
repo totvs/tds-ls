@@ -292,7 +292,7 @@ Executa a compilação/recompilação de programas no RPO.
 action=compile 
 program=/home/mansano/tdscli/src/prog1.prw,/home/mansano/tdscli/src/prog2.prw
 recompile=T
-includes=${INCLUDE_DIR}
+includes=/home/mansano/_c/lib120/src/include/
 ```
 
 ### Retorno
