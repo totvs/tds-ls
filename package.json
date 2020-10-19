@@ -1,6 +1,6 @@
 {
   "name": "@totvs/tds-ls",
-  "version": "1.1.31",
+  "version": "1.1.32",
   "description": "Totvs Language Server",
   "repository": {
     "type": "git",
