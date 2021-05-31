@@ -212,7 +212,19 @@ ID: ED75-E184
 
 ## `action = authorization`
 
-Aplica a chave de compilação.
+Aplica o token de compilação (Harpia) ou chave de compilação.
+
+> O **token de compilação** é de uso exclusivo da TOTVS para o Appserver Harpia.
+
+| Parâmetro | Valor               | Descrição                    |
+|-----------|---------------------|------------------------------|
+| authtoken | Token de compilação | Define o token de compilação | 
+
+```ini
+[authorization]
+action=authorization 
+authtoken=<token de compilação>
+```
 
 > O **ID** do TDSCli-LS é diferente do TDSCLi-Eclipse, tornando as **chaves de compilação** incompatíveis.
 
