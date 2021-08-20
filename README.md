@@ -10,6 +10,10 @@ Além das mensagens especificadas pelo protocolo *LSP* o **TDS LS** implementa m
 
 Assim que estabilizadas as mensagens adicionais serão documentadas aqui para que quaisquer desenvolvedores possam implementar sua própria *IDE* e utilizar o motor do **TDS LS**.
 
+## Chamados
+
+Esse repositório não é acompanhado pela equipe de desenvolvimento, para problemas com a utilização dessa ferramenta, favor utilizar o repositório do tds-vscode: https://github.com/totvs/tds-vscode/
+
 ## Mensagens `$totvsserver`
 
 | Mensagem                    | Descrição                                |
