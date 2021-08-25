@@ -1,6 +1,6 @@
 # TDSCLi (LS)
 
-O TDS**CLi**-LS (**C**ommand **Li**ne) é uma ferramenta do ecossistema **TOTVS Protheus** que permite ações como a compilação e aplicação de patchs via linha de comando. 
+O TDS**CLi**-LS (**C**ommand **Li**ne) é uma ferramenta do ecossistema **TOTVS Protheus** que permite ações como a compilação e aplicação de patchs via linha de comando.
 
 Ele utiliza o **AdvPLS**, que está disponível no diretório do plugin do **TDS-VSCode** para os três sistemas operacionais homologados, conforme exemplo abaixo.
 
@@ -16,9 +16,9 @@ Para utilização da ferramenta é necessária a criação de um **arquivo de ex
 
 o AdvPLS permite executar múltiplas ações em uma única chamada, por exemplo:
 
-* Conexão ao AppServer (action=**authentication**);
-* Compilação de um conjunto de fontes (**compile**);
-* Defrag do RPO (**defragRPO**)
+- Conexão ao AppServer (action=**authentication**);
+- Compilação de um conjunto de fontes (**compile**);
+- Defrag do RPO (**defragRPO**)
 
 ## Modo de compatibilidade
 
@@ -26,12 +26,16 @@ O TDSCli-LS possui um modo de compatibilidade com o TDSCli-Eclipse, para mais in
 
 ## Arquivo de execução
 
-Recomendamos o uso de um arquivo de execução com a extensão **.INI**, pois editores como o próprio VSCode farão seu *syntax highlight*, facilitando o desenvolvimento.
+**ATENÇÃO**: Este arquivo deve ter o formato ANSI (CP1252). Caso contrário poderá ocorrer erro na sua execução.
+
+Recomendamos o uso de um arquivo de execução com a extensão **.INI**, pois editores como o próprio VSCode farão seu _syntax highlight_, facilitando o desenvolvimento.
 
 ### Características do arquivo de execução
 
-* As tags "`#`" ou "`;`" representam os comentários do arquivo de execução; 
-* Use a tag `[]` para subdividir as seções a serem executadas, exemplo: 
+- Formato ANSI (CP1252);
+- As tags "`#`" ou "`;`" representam os comentários do arquivo de execução;
+- Use a tag `[]` para subdividir as seções a serem executadas, exemplo:
+
 ```ini
         ;Exemplo
         [Conectando]
@@ -40,9 +44,10 @@ Recomendamos o uso de um arquivo de execução com a extensão **.INI**, pois ed
         [Compacta RPO]
         action = defragRPO
 ```
-   * **Importante**: Duas seções **não devem ser declaradas** no arquivo de execução como subdivisão customizada:
-        * `[geral] -> apenas para uso interno`
-        * `[user] -> onde definimos as variáveis de ambiente`
+
+- **Importante**: Duas seções **não devem ser declaradas** no arquivo de execução como subdivisão customizada:
+  - `[geral] -> apenas para uso interno`
+  - `[user] -> onde definimos as variáveis de ambiente`
 
 ## Usando caminhos relativos ou absolutos
 
@@ -58,9 +63,10 @@ Prefira usar **caminhos absolutos**, garantindo a correta localização dos arqu
 
 Você pode utilizar a barra **`/`** como separador de diretórios independentemente do seu sistema operacional.
 
-> A execução do TDSCli-LS no **Linux** deve respeitar as regras do *AppServer Protheus* para este sistema operacional, que são:
-* Utilize apenas **caracteres minúsculos** na composição do diretorio/arquivo.ext;
-* **Não utilize acentuação** na composição diretorio/arquivo.ext.
+> A execução do TDSCli-LS no **Linux** deve respeitar as regras do _AppServer Protheus_ para este sistema operacional, que são:
+
+- Utilize apenas **caracteres minúsculos** na composição do diretorio/arquivo.ext;
+- **Não utilize acentuação** na composição diretorio/arquivo.ext.
 
 ## Exemplo
 
@@ -89,7 +95,7 @@ psw=
 
 ; Compilando dois fontes
 [compile]
-action=compile 
+action=compile
 program=/home/mansano/tdscli/src/prog1.prw,/home/mansano/tdscli/src/prog2.prw
 recompile=T
 includes=${INCLUDE_DIR}
@@ -120,12 +126,13 @@ includes=${INCLUDE_DIR}
 
 Os parâmetros gerais devem sempre ser inseridos no **início do arquivo** de execução.
 
-| Parâmetro         | Valor                                   | Descrição                                                                     |
-|-------------------|-----------------------------------------|-------------------------------------------------------------------------------|
-| logToFile         | diretorio/arquivo.log | Arquivo que receberá as informações da execução do arquivo     |
-| showConsoleOutput | True (T) ou False (F)                   | True = Exibe informações no console |
+| Parâmetro         | Valor                 | Descrição                                                  |
+| ----------------- | --------------------- | ---------------------------------------------------------- |
+| logToFile         | diretorio/arquivo.log | Arquivo que receberá as informações da execução do arquivo |
+| showConsoleOutput | True (T) ou False (F) | True = Exibe informações no console                        |
 
 ### Exemplo
+
 ```ini
 ; logToFile: diretorio/arquivo para arquivar log da execução
 ; showConsoleOutput: True exibe informações no console
@@ -146,20 +153,21 @@ Na seção `[user]` definimos as variáveis de ambiente, que podem ser usadas em
 INCLUDE_DIR=/home/mansano/_c/lib120/src/include/
 ...
 [compile]
-action=compile 
+action=compile
 includes=${INCLUDE_DIR}
 ```
 
 ## Seções de usuário
 
-As seções permitem **organizar** seu arquivo de execução, para seu nome é permitido uso de espaços e caracteres especiais. 
+As seções permitem **organizar** seu arquivo de execução, para seu nome é permitido uso de espaços e caracteres especiais.
 
 ### Exemplo
 
 ```ini
 [compilação de arquivos]
-action=compile 
+action=compile
 ```
+
 A execução do **arquivo é sequencial**, percorrendo todas as seções cadastradas.
 
 > O parâmetro **`skip=True`** utilizado em uma seção permite ignorar sua execução, isso pode ser util caso necessite reaproveitar o mesmo arquivo de execução para várias finalidades.
@@ -168,13 +176,13 @@ A execução do **arquivo é sequencial**, percorrendo todas as seções cadastr
 
 ## `action = validate`
 
-Obtém a versão de *release* do AppServer, permitindo seu uso na tag **build** da **action authentication**.
+Obtém a versão de _release_ do AppServer, permitindo seu uso na tag **build** da **action authentication**.
 
-| Parâmetro | Valor    | Descrição                       |
-|-----------|----------|---------------------------------|
-| server    | IP       | Endereço IP do AppServer        |
-| port      | numérico | Porta do AppServer              |
-| secure    | 1 ou 0   | Se a conexão é segura ou não, 1=Conexão segura, 0=Conexão convencional    |
+| Parâmetro | Valor    | Descrição                                                              |
+| --------- | -------- | ---------------------------------------------------------------------- |
+| server    | IP       | Endereço IP do AppServer                                               |
+| port      | numérico | Porta do AppServer                                                     |
+| secure    | 1 ou 0   | Se a conexão é segura ou não, 1=Conexão segura, 0=Conexão convencional |
 
 ### Exemplo
 
@@ -217,24 +225,24 @@ Aplica o token de compilação (Harpia) ou chave de compilação.
 > O **token de compilação** é de uso exclusivo da TOTVS para o Appserver Harpia.
 
 | Parâmetro | Valor               | Descrição                    |
-|-----------|---------------------|------------------------------|
-| authtoken | Token de compilação | Define o token de compilação | 
+| --------- | ------------------- | ---------------------------- |
+| authtoken | Token de compilação | Define o token de compilação |
 
 ```ini
 [authorization]
-action=authorization 
+action=authorization
 authtoken=<token de compilação>
 ```
 
 > O **ID** do TDSCli-LS é diferente do TDSCLi-Eclipse, tornando as **chaves de compilação** incompatíveis.
 
 | Parâmetro     | Valor                                   | Descrição                                  |
-|---------------|-----------------------------------------|--------------------------------------------|
-| authorization | Caminho relativo ou absoluto do arquivo | Define o arquivo com a chave de compilação | 
+| ------------- | --------------------------------------- | ------------------------------------------ |
+| authorization | Caminho relativo ou absoluto do arquivo | Define o arquivo com a chave de compilação |
 
 ```ini
 [authorization]
-action=authorization 
+action=authorization
 authorization=/home/mansano/tdscli/ED75-E184.aut
 ```
 
@@ -244,15 +252,15 @@ authorization=/home/mansano/tdscli/ED75-E184.aut
 
 Executa a conexão com o AppServer.
 
-| Parâmetro   | Valor             | Descrição                                     |
-|-------------|-------------------|-----------------------------------------------|
-| server      | IP                | Endereço do AppServer                         |
-| port        | numérico          | Porta em que o AppServer escuta               |
-| secure      | 1 ou 0            | Se a conexão é segura ou não, 1=Conexão segura, 0=Conexão convencional                  |
-| build       | *build* ou *AUTO* | Release do AppServer ou AUTO para detecção automática         |
-| user        | "nome de usuário" | Usuário para autenticação                     |
-| psw         | "senha"           | Senha para autenticação                       |
-| environment | "ambiente"        | Ambiente na qual será efetuada a autenticação |
+| Parâmetro   | Valor             | Descrição                                                              |
+| ----------- | ----------------- | ---------------------------------------------------------------------- |
+| server      | IP                | Endereço do AppServer                                                  |
+| port        | numérico          | Porta em que o AppServer escuta                                        |
+| secure      | 1 ou 0            | Se a conexão é segura ou não, 1=Conexão segura, 0=Conexão convencional |
+| build       | _build_ ou _AUTO_ | Release do AppServer ou AUTO para detecção automática                  |
+| user        | "nome de usuário" | Usuário para autenticação                                              |
+| psw         | "senha"           | Senha para autenticação                                                |
+| environment | "ambiente"        | Ambiente na qual será efetuada a autenticação                          |
 
 ### Exemplo
 
@@ -288,12 +296,12 @@ Executa a compilação/recompilação de programas no RPO.
 
 > Se for executar uma compilação que necessite do uso da **chave de compilação** crie a seção com a **action `authorization`** antes desta.
 
-| Parâmetro   | Valor                                                       | Descrição                                                                         |
-|-------------|-------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| program     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Programas a serem processados                                                     |
-| programList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**) |
-| recompile   | True (T) ou False (F)                                       | True se deve efetuar recompilação                                              |
-| includes    | Diretórios com includes separados por `,` ou `;`            | Arquivos de includes, **O caminho para os diretórios de include deve sempre ser absoluto, ex: c:\dir\includes pois será utilizado pelo AppServer no momento da compilação**                                                              |
+| Parâmetro   | Valor                                                       | Descrição                                                                                                                                                                   |
+| ----------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| program     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Programas a serem processados                                                                                                                                               |
+| programList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**)                                                              |
+| recompile   | True (T) ou False (F)                                       | True se deve efetuar recompilação                                                                                                                                           |
+| includes    | Diretórios com includes separados por `,` ou `;`            | Arquivos de includes, **O caminho para os diretórios de include deve sempre ser absoluto, ex: c:\dir\includes pois será utilizado pelo AppServer no momento da compilação** |
 
 > Informar a opção `program` ou `programList` **mas não ambas**.
 
@@ -301,7 +309,7 @@ Executa a compilação/recompilação de programas no RPO.
 
 ```ini
 [compile]
-action=compile 
+action=compile
 program=/home/mansano/tdscli/src/prog1.prw,/home/mansano/tdscli/src/prog2.prw
 recompile=T
 includes=/home/mansano/_c/lib120/src/include/
@@ -328,18 +336,17 @@ Executa a geração de patch.
 
 > Esta action depende da **action authentication**.
 
-| Parâmetro        | Valor                                                       | Descrição                                                                         |
-|------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| saveLocal        | Caminho relativo ou absoluto do arquivo                     | Diretório onde será gerado o patch localmente                                     |
-| saveRemote       | Caminho relativo                                            | Diretório onde será gerado o patch remotamente (AppServer)                        |
-| fileResource     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Fontes e Recursos a serem processados                                                      |
+| Parâmetro        | Valor                                                       | Descrição                                                                                                      |
+| ---------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| saveLocal        | Caminho relativo ou absoluto do arquivo                     | Diretório onde será gerado o patch localmente                                                                  |
+| saveRemote       | Caminho relativo                                            | Diretório onde será gerado o patch remotamente (AppServer)                                                     |
+| fileResource     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Fontes e Recursos a serem processados                                                                          |
 | fileResourceList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**) |
-| patchType        | PTM, UPD ou PAK                                             | Extensões permitidas para arquivos de  patches                                                  | 
+| patchType        | PTM, UPD ou PAK                                             | Extensões permitidas para arquivos de patches                                                                  |
 
 > Informar a opção `saveLocal` ou `saveRemote` **mas não ambas**.
 
 > Informar a opção `fileResource` ou `fileResourceList` **mas não ambas**.
-
 
 ### Exemplo
 
@@ -369,12 +376,12 @@ Efetua a aplicação de patch.
 
 > Esta action depende da **action authentication**.
 
-| Parâmetro       | Valor                                   | Descrição                                                                                   |
-|-----------------|-----------------------------------------|---------------------------------------------------------------------------------------------|
-| patchFile       | Caminho relativo ou absoluto do arquivo | Arquivo de patch a ser aplicado                                                             |
-| localPatch      | True (T) ou False (F)                   | **True** se o arquivo de patch é local ou **False** se o arquivo estiver em um diretório no AppServer                                   |
-| validatePatch   | True (T) ou False (F)                   | True para validação do patch                                                        |
-| applyOldProgram | True (T) ou False (F)                   | True para aplicação de programas com data de compilação mais antigas que as existentes no RPO | 
+| Parâmetro       | Valor                                   | Descrição                                                                                             |
+| --------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| patchFile       | Caminho relativo ou absoluto do arquivo | Arquivo de patch a ser aplicado                                                                       |
+| localPatch      | True (T) ou False (F)                   | **True** se o arquivo de patch é local ou **False** se o arquivo estiver em um diretório no AppServer |
+| validatePatch   | True (T) ou False (F)                   | True para validação do patch                                                                          |
+| applyOldProgram | True (T) ou False (F)                   | True para aplicação de programas com data de compilação mais antigas que as existentes no RPO         |
 
 ### Exemplo
 
@@ -403,11 +410,11 @@ Obtém as informações de um patch.
 
 > Esta action depende da **action authentication**.
 
-| Parâmetro  | Valor                                   | Descrição                                                 |
-|------------|-----------------------------------------|-----------------------------------------------------------|
-| patchFile  | Caminho relativo ou absoluto do arquivo | Arquivo de patch a ser analisado                          |
+| Parâmetro  | Valor                                   | Descrição                                                                                             |
+| ---------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| patchFile  | Caminho relativo ou absoluto do arquivo | Arquivo de patch a ser analisado                                                                      |
 | localPatch | True (T) ou False (F)                   | **True** se o arquivo de patch é local ou **False** se o arquivo estiver em um diretório no AppServer |
-| output     | Caminho relativo ou absoluto do arquivo | Arquivo com as informações contidas no patch              |
+| output     | Caminho relativo ou absoluto do arquivo | Arquivo com as informações contidas no patch                                                          |
 
 ### Exemplo
 
@@ -437,9 +444,9 @@ Remove programas do RPO conectado.
 
 > Se for executar uma remoção que necessite do uso da **chave de compilação** crie a seção com a **action `authorization`** antes desta.
 
-| Parâmetro   | Valor                                                       | Descrição                                                                          |
-|-------------|-------------------------------------------------------------|------------------------------------------------------------------------------------|
-| program     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Programas a serem processados                                                      |
+| Parâmetro   | Valor                                                       | Descrição                                                                                                      |
+| ----------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| program     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Programas a serem processados                                                                                  |
 | programList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**) |
 
 > Informar a opção `program` ou `programList` **mas não ambas**.
@@ -496,7 +503,7 @@ Para utilizar o modo de compatibilidade com **TDSCLi-Eclipse** usaremos arquivos
 
 > Mac OS: `> ./tdscli.sh <action> <parâmetros_da_ação>`
 
-### Usando parâmetros em linha de comando 
+### Usando parâmetros em linha de comando
 
 `> tdscli.bat <action> <parametro_da_acao_1> <parametro_da_acao_2> <parametro_da_acao_3>...`
 
@@ -506,7 +513,7 @@ Para utilizar o modo de compatibilidade com **TDSCLi-Eclipse** usaremos arquivos
 
 > Os parâmetros obrigatórios **dependem da action**, porém em todas as actions os parâmetros de conexão da **action authentication** devem ser informados.
 
-### Exemplo usando **parâmetros em linha de comando**  
+### Exemplo usando **parâmetros em linha de comando**
 
 `> tdscli.bat compile serverType=AdvPL server=localhost port=1234 build=7.00.170117A environment=env user=user psw=pass includes=D:/servers/protheus/includes program=D:/fontes/advpl/prg_0001.prw;D:/fontes/advpl/prg_0002.prw;D:/fontes/advpl/prg_0003.prw authorization=D:/chave_compilacao/chave.aut recompile=t`
 
