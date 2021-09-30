@@ -332,15 +332,17 @@ Executa a geração de patch.
 |------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------------|
 | saveLocal        | Caminho relativo ou absoluto do arquivo                     | Diretório onde será gerado o patch localmente                                     |
 | saveRemote       | Caminho relativo                                            | Diretório onde será gerado o patch remotamente (AppServer)                        |
-| fileResource     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Fontes e Recursos a serem processados                                                      |
+| fileResource     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Fontes e Recursos a serem processados                                             |
 | fileResourceList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**) |
-| patchType        | PTM, UPD ou PAK                                             | Extensões permitidas para arquivos de  patches                                                  | 
+| patchName        | Nome de saída do patch gerado                               | Nome de saída do patch gerado (sem a extensão) *opcional*                         | 
+| patchType        | PTM, UPD ou PAK                                             | Extensões permitidas para arquivos de  patches                                    | 
 
 > Informar a opção `saveLocal` ou `saveRemote` **mas não ambas**.
 
 > Informar a opção `fileResource` ou `fileResourceList` **mas não ambas**.
 
-
+> Caso o parêmetro opcional `patchName` não seja informado, o patch será gerado com o nome definido pelo AppServer.
+        
 ### Exemplo
 
 ```ini
