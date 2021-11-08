@@ -1,13 +1,16 @@
 {
   "name": "@totvs/tds-da",
-  "version": "1.1.21",
+  "version": "1.1.26",
   "description": "Totvs Debug Adapter",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/totvs/tds-da.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "---RELEASE---": "",
+    "tag": "git push --follow-tags",
+    "to_publish": "npm publish"
   },
   "author": "TOTVS S.A.",
   "license": "Apache-2.0",
