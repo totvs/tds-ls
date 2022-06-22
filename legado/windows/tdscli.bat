@@ -14,7 +14,7 @@ SET LS=%LS_DIR%\%LS_EXE%
 SET ARGS=%*
 IF DEFINED ARGS SET ARGS=%ARGS:"=\"%
 
-CALL %LS% %DEBUG_LOG% --tdsCliArguments="%ARGS%"
+CALL %LS% tds-cli %DEBUG_LOG% --tdsCliArguments="%ARGS%"
 
 IF "%DEBUG%"=="1" IF %ERRORLEVEL% NEQ 0 echo TDS CLi errorcode [%ERRORLEVEL%]
 

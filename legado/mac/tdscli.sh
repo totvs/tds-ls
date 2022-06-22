@@ -30,7 +30,7 @@ while (( "$#" )); do        # While there are arguments still to be shifted...
   shift
 done
 
-exec $LS $DEBUG_LOG --tdsCliArguments="${argsOut:1}"
+exec $LS tds-cli $DEBUG_LOG --tdsCliArguments="${argsOut:1}"
 
 STATUS=$?
 if [[ "$DEBUG" -eq "1" ]] && [ $STATUS -ne 0 ]; then
