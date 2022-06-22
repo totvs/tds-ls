@@ -1,14 +1,16 @@
 # TDS LS 
 
-O projeto **TDS LS** é a implementação da **TOTVS** da especificação do *Language Server Protocol* ([https://microsoft.github.io/language-server-protocol/](https://microsoft.github.io/language-server-protocol/)) que pode ser utilizada por quaisquer *IDEs* que suportam este protocolo.
+O projeto **TDS LS** é a implementação da **TOTVS** da especificação do [*Language Server Protocol*](https://microsoft.github.io/language-server-protocol/) que pode ser utilizada por quaisquer *IDEs* ou *editores* que suportam este protocolo.
 
-Atualmente o **TDS LS** está sendo utilizada pelo **TDS VS Code** ([https://github.com/totvs/tds-vscode](https://github.com/totvs/tds-vscode)) e pelo **TDS Eclipse** ([https://github.com/totvs/tds-eclipse](https://github.com/totvs/tds-eclipse)).
+Atualmente o **TDS LS** é utilizado pela extensão [**TDS-VS Code**](https://github.com/totvs/tds-vscode)) e pelo [**TDS Eclipse**](https://github.com/totvs/tds-eclipse).
+
+Também pode ser usado em [interface de linha de comando](.TDS-CLi.md) para automação de tarefas ou editores que não suportem o **LSP**.
 
 ## Especificação
 
-Além das mensagens especificadas pelo protocolo *LSP* o **TDS LS** implementa mensagens adicionais (`$totvsserver`) de uso dos *AppServers* da **TOTVS**, para realizar a conexão, compilação, aplicação de *patches* dentre outras ações.
+Além das mensagens especificadas do protocolo **LSP**, o **TDS LS** implementa mensagens adicionais (`$totvsserver`) de uso dos _AppServers_ da **TOTVS**, para realizar a conexão, compilação, aplicação de _patches_ dentre outras ações.
 
-Assim que estabilizadas as mensagens adicionais serão documentadas aqui para que quaisquer desenvolvedores possam implementar sua própria *IDE* e utilizar o motor do **TDS LS**.
+Assim que estabilizadas as mensagens adicionais serão documentadas aqui para que quailquer desenvolvedor possa implementar sua própria *IDE* e utilizar o motor do **TDS LS**.
 
 ## Chamados
 
