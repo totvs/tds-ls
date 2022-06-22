@@ -1,529 +1,238 @@
-# TDSCLi (LS)
+# TDS-CLI (LS)
 
-O TDS**CLi**-LS (**C**ommand **Li**ne) é uma ferramenta do ecossistema **TOTVS Protheus** que permite ações como a compilação e aplicação de patchs via linha de comando.
+O _**TDSCLI-LS**_ (_**C**ommand **L**ne **I**nterface_ **L**anguage **S**erver) é uma ferramenta do ecossistema **TOTVS Protheus** que permite ações como a compilação e aplicação de patchs via linha de comando.
 
-Ele utiliza o **AdvPLS**, que está disponível no diretório do plugin do **TDS-VSCode** para os três sistemas operacionais homologados, conforme exemplo abaixo.
+## Obtendo a ferramenta
 
-![Advpl-dir](https://github.com/totvs/tds-ls/blob/master/images/advpls_dirs.png)
+### A partir do GitHub
 
-> Mais informações sobre o plugin [clique aqui](https://marketplace.visualstudio.com/items?itemName=totvs.tds-vscode).
+Acesse a página de (Liberações)[https://github.com/totvs/tds-ls/releases], localize a versão desejada e salva o pacote do executável adequado ao seu sistema operacional.
+
+> Não há processo de instalação. Os binários são portáteis.
+
+> Para uso em modo legado (compátivel com **TDScli-Eclipse**), use também os arquivos de [comandos em lote](./legado).
+
+### NodeJS
+
+Uso geral:
+
+`npm -G install @totvs/tds-ls`
+
+Associado a um projeto específico:
+
+`npm install @totvs/tds-ls [--save-dev]`
+
+Via extensão TDS-VSCode
+
+O **AdvPLS**, também está disponível no diretório da extensão do **TDS-VSCode** para os três sistemas operacionais homologados, conforme exemplo abaixo.
+
+![Advpl-dir](./images/advpls_dirs.png)
+
+> Mais informações sobre a extensão [TDS-VSCode](https://marketplace.visualstudio.com/items?itemName=totvs.tds-vscode).
 
 ## Utilizando o AdvPLS
 
-Para utilização da ferramenta é necessária a criação de um **arquivo de execução**, explicado a seguir, chamado através do parâmetro `--tdsCli`.
+### Modos de execução
 
-> `> advpls --tdsCli=<params_file>`
+```
+> advpls
+Usage: advpls.exe [options] mode
+Performs the LS actions via command line interface (CLI).
 
-o AdvPLS permite executar múltiplas ações em uma única chamada, por exemplo:
+Options:
+  -?, -h, --help                Displays help on commandline options.
+  --help-all                    Displays help including Qt specific options.
+  -v, --version                 Displays version information.
+  --wait-for-attach <seconds>   Wait <seconds> to start execution. Debug
+                                purpose only.
+  --verbose <level>             Verbose execution.
+  --log-all-to-stderr           Forward all messages to stderr (error console
+                                standard).
+  --log-file <filename>         Log file.
+  --log-file-append <filename>  Log append file.
+  --record                      Enable record communication details.
+  --wait-for-input              Wait for an '[Enter]' before exiting. Debug
+                                purpose only.
 
-- Conexão ao AppServer (action=**authentication**);
+Arguments:
+  mode                          Execution mode
+                                (language-server|cli|appre|tds-cli).
+```
+
+| Argumentos | Uso |
+| - | -|
+| `mode`| Indica como o `advpls` será utilizado.|
+| | `language-server`, como servidor em segundo plano, usando protocolo LS e comunicação via `stdin` e `stdout`.|
+| | `cli`, executa arquivos de (_script_)[TDS-cli-script.md] que contém uma sequência de ações.|
+| | `appre`, executa processo de pré-compilação, sem depender de um servidor Protheus (ações limitadas).|
+| | `tds-cli`, executa em modo de compatibilidade com o **TDScli-Eclipse**.|
+
+> Estas opções são válidas para todos os modos de execução.
+
+> Opções não documentadas ou com propósito de depuração, devem ter seu uso usados com cautela.
+
+| <a name="generalOptions">Opções | Uso geral (todos os modos) |
+| - | - |
+| -?, -h, --help| Apresenta descritivo das opções.|
+| -v, --version| Apresenta a versão.|
+| --verbose \<level>| Nível de informação a ser apresentada durante execução.|
+| --log-all-to-stderr| Envia todas as mensagens para a saída padrão de erro (console).|
+| --log-file <filename>| Arquivo de registro de ocorrências.|
+| --log-file-append| Indica que informações de nova execução devem ser anexadas as já existentes.|
+| --record| Habilita o detalhamento da comunicação.|
+
+## Modo _language-server_
+
+A execução, normalmente, ocorre em segundo plano (_backgroud_), utilizando o console padrão (_stdin_ e _stdout_) para comunicação usando o [protocolo de servidor de linguagem (LSP do inglês)](https://microsoft.github.io/language-server-protocol/).
+
+Pode ser utilizado em editores e _IDE_ que suportam o protocolo.
+
+```
+> advpls.exe language-server --help
+Usage: advpls.exe [options] language-server
+Performs the LS actions via command line interface (CLI).
+
+Options:
+  --auth-request, --authRequest    Auth request arguments. Debug purpose only.
+  --check-sm                       Check SM. Debug purpose only.
+  --enable-auto-complete <enable>  EnableAutoComplete option.
+  --notification-level <level>     Notification level.
+  --fs-encoding <code-page>        File System encoding page.
+  --includes <includeList>         Include folder list.
+  --linter <linter>                Enable linter.
+
+Arguments:
+  language-server                  Language Server(background) execution mode.
+```
+
+| Argumentos | Uso |
+| - | - |
+| `language-server` | Como servidor em segundo plano, usando protocolo LS e comunicação via `stdin` e `stdout`.|
+
+| Opção | Uso |
+| - | - |
+| \<options> | Opções de [uso geral](#generalOptions). |
+| --enable-auto-complete| Habilita o modo do auto-complementar pelo servidor.|
+| --notification-level \<level>| Nível das notificações a serem enviadas ao editor/IDE.<br>`none`, nenhuma notificação;<br>`only errors`, somente erros;<br>`errors and warnings`, erros e avisos;<br>`errors warnings and infos`, erros, avisos e informações;<br>`all`, informações detalhadas incluindo de depuração;|
+| --fs-encoding \<code-page>| Código de página utilizado pelo sistema de arquivos.<br>`CP1252`, `CP1251` ou `UTF-8`|
+| --includes \<includeList>| Lista de pastas para busca de arquivos de definição, separadas por ponto-e-vírgula (`;`).|
+| --linter| Habilita [pré análise]([https://github.com/totvs/tds-vscode/blob/master/docs/linter.md) de arquivos-fontes.|
+
+## Modo _cli_
+
+A execução nesse modo permite executar múltiplas ações em uma única chamada através da execução de um [_scriptFile_](TDS-cli-script.md), por exemplo:
+
+- Conexão ao _AppServer_ (action=**authentication**);
 - Compilação de um conjunto de fontes (**compile**);
 - Defrag do RPO (**defragRPO**)
 
-## Modo de compatibilidade
+```
+W:\ws_tds_vscode\tds-ls\bin\windows>advpls.exe cli --help             
+Usage: advpls.exe [options] cli <scriptFile>
+Performs the LS actions via command line interface (CLI).
 
-O TDSCli-LS possui um modo de compatibilidade com o TDSCli-Eclipse, para mais informações [clique aqui](#compatibilidade_legado).
+Options:
 
-## Arquivo de execução
-
-**ATENÇÃO**: Este arquivo deve ter o formato ANSI (CP1252). Caso contrário poderá ocorrer erro na sua execução.
-
-Recomendamos o uso de um arquivo de execução com a extensão **.INI**, pois editores como o próprio VSCode farão seu _syntax highlight_, facilitando o desenvolvimento.
-
-### Características do arquivo de execução
-
-- Formato ANSI (CP1252);
-- As tags "`#`" ou "`;`" representam os comentários do arquivo de execução;
-- Use a tag `[]` para subdividir as seções a serem executadas, exemplo:
-
-```ini
-        ;Exemplo
-        [Conectando]
-        action = authentication
-        ...
-        [Compacta RPO]
-        action = defragRPO
+Arguments:
+  cli                          Script execution mode.
+  scriptFile                   Script file.
 ```
 
-- **Importante**: Duas seções **não devem ser declaradas** no arquivo de execução como subdivisão customizada:
-  - `[geral] -> apenas para uso interno`
-  - `[user] -> onde definimos as variáveis de ambiente`
+| Argumentos | Uso |
+| - | - |
+| `cli` | Executa arquivos de (_script_)[TDS-cli-script.md] que contém uma sequência de ações.|
 
-## Usando caminhos relativos ou absolutos
+| Opção | Uso |
+| - | - |
+| \<options> | Opções de [uso geral](#generalOptions). |
 
-Quando for necessário "apontar" para um arquivo, como um patch por exemplo, você poderá fazer uso de caminhos absolutos:
+## Modo _appre_
 
-> **Windows:** `C:\dir\file.ptm` **ou Linux:** `/home/user/dir/file.ptm`
-
-Ou poderá utilizar caminhos relativos ao diretório do seu arquivo de execução:
-
-> **Windows:** `dir\file.ptm` **ou Linux:** `dir/file.ptm`
-
-Prefira usar **caminhos absolutos**, garantindo a correta localização dos arquivos.
-
-Você pode utilizar a barra **`/`** como separador de diretórios independentemente do seu sistema operacional.
-
-> A execução do TDSCli-LS no **Linux** deve respeitar as regras do _AppServer Protheus_ para este sistema operacional, que são:
-
-- Utilize apenas **caracteres minúsculos** na composição do diretorio/arquivo.ext;
-- **Não utilize acentuação** na composição diretorio/arquivo.ext.
-
-## Exemplo
-
-Agora que conhecemos o arquivo de execução vamos ver um exemplo:
-
-```ini
-; logToFile: diretorio/arquivo para arquivar log da execução
-; showConsoleOutput: True exibe informações no console
-logToFile=/home/mansano/tdscli/logs/log1.log
-showConsoleOutput=true
-
-; Na seção [user] definimos as variáveis de ambiente
-[user]
-INCLUDE_DIR=/home/mansano/_c/lib120/src/include/
-
-; Conexão e autenticação com o AppServer
-[authentication]
-action=authentication
-server=192.168.0.198
-port=5025
-secure=0
-build=7.00.170117A
-environment=producao
-user=admin
-psw=
-
-; Compilando dois fontes
-[compile]
-action=compile
-program=/home/mansano/tdscli/src/prog1.prw,/home/mansano/tdscli/src/prog2.prw
-recompile=T
-includes=${INCLUDE_DIR}
-```
-
-### Retorno
+A execução nesse modo permite efetuar um pré-processamento nos arquivos-fontes, compilando-o e gerando o arquivo intermediário `.ppo` ou equivalente. Esse modo não depende de conexão prévia a um _appServer_.
 
 ```
-[LOG] Starting connection to the server 'tdscli.serverName' (192.168.0.198@5025)
-[LOG] Connection to the server 'tdscli.serverName' finished.
-[LOG] Starting user 'admin' authentication.
-[LOG] Authenticating...
-[LOG] User authenticated successfully.
-[LOG] User 'admin' authentication finished.
-[INFO] Starting recompile.
-[LOG] Starting build for environment producao.
-[LOG] Start recompile of 2 files.
-[LOG] Start regular compiling /home/mansano/tdscli/src/prog1.prw (1/2).
-[LOG] [SUCCESS] Source /home/mansano/tdscli/src/prog1.prw compiled successfully.
-[LOG] Start regular compiling /home/mansano/tdscli/src/prog2.prw (2/2).
-[LOG] [SUCCESS] Source /home/mansano/tdscli/src/prog2.prw compiled successfully.
-[LOG] Committing end build.
-[LOG] All files compiled successfully.
-[INFO] Recompile finished.
+>advpls.exe appre --help 
+Usage: advpls.exe [options] appre source[,..]
+Performs the LS actions via command line interface (CLI).
+
+Options:
+  -I, -i <folder>              Include folder.
+  -D, -d <define>              Direcitve define, eg. /DTOP
+
+Arguments:
+  appre                        Appre execution mode.
+  source                       Source (file or folder or @<sourceList.txt>).
 ```
 
-## Parâmetros gerais
+| Argumentos | Uso |
+| -|------|
+| `appre`| Executa processo de pré-compilação, sem depender de um servidor Protheus (ações limitadas).|
+| `source`| Lista de arquivos (ou pastas), separadas por vírgula (``,``).|
 
-Os parâmetros gerais devem sempre ser inseridos no **início do arquivo** de execução.
+| Opções | Uso |
+| -| -|
+| \<options> | Opções de [uso geral](#generalOptions). |
+| -I, -i <folder> | Pasta para busca de arquivos de definição.<br>Pode ser informada uma ou mais vezes. |  
+| -D, -d <define> | Define uma constante (similar a diretiva ``#define``) para determinar comportamentos e/ou isolamento de código, p.e. ``/DTOP``.<br>Pode ser informada uma ou mais vezes.
 
-| Parâmetro         | Valor                 | Descrição                                                  |
-| ----------------- | --------------------- | ---------------------------------------------------------- |
-| logToFile         | diretorio/arquivo.log | Arquivo que receberá as informações da execução do arquivo |
-| showConsoleOutput | True (T) ou False (F) | True = Exibe informações no console                        |
+## Modo _tds_cli_
 
-### Exemplo
-
-```ini
-; logToFile: diretorio/arquivo para arquivar log da execução
-; showConsoleOutput: True exibe informações no console
-logToFile=/home/mansano/tdscli/logs/log1.log
-showConsoleOutput=true
-```
-
-## Seção `[user]`
-
-Na seção `[user]` definimos as variáveis de ambiente, que podem ser usadas em todas as seções do arquivo de execução.
-
-> Para utilização da variável de ambiente use a macro `${var_name}`
-
-### Exemplo
-
-```ini
-[user]
-INCLUDE_DIR=/home/mansano/_c/lib120/src/include/
-...
-[compile]
-action=compile
-includes=${INCLUDE_DIR}
-```
-
-## Seções de usuário
-
-As seções permitem **organizar** seu arquivo de execução, para seu nome é permitido uso de espaços e caracteres especiais.
-
-### Exemplo
-
-```ini
-[compilação de arquivos]
-action=compile
-```
-
-A execução do **arquivo é sequencial**, percorrendo todas as seções cadastradas.
-
-> O parâmetro **`skip=True`** utilizado em uma seção permite ignorar sua execução, isso pode ser util caso necessite reaproveitar o mesmo arquivo de execução para várias finalidades.
-
-> Cada seção contém uma **`action`**, explicadas a seguir.
-
-## `action = validate`
-
-Obtém a versão de _release_ do AppServer, permitindo seu uso na tag **build** da **action authentication**.
-
-| Parâmetro | Valor    | Descrição                                                              |
-| --------- | -------- | ---------------------------------------------------------------------- |
-| server    | IP       | Endereço IP do AppServer                                               |
-| port      | numérico | Porta do AppServer                                                     |
-| secure    | 1 ou 0   | Se a conexão é segura ou não, 1=Conexão segura, 0=Conexão convencional |
-
-### Exemplo
-
-```ini
-[validate]
-action=validate
-server=192.168.0.198
-port=5025
-secure=0
-```
-
-### Retorno
+Executa TDScli-LS em modo de compatibilidade (legado) com o **TDScli-Eclipse**.
 
 ```
-[LOG] Appserver detected with build version: 7.00.170117A and secure: 0
-build: 7.00.170117A / secure: 0
+>advpls.exe tds-cli --help 
+Usage: advpls.exe [options] tds-cli
+Performs the LS actions via command line interface (CLI).
+
+Options:
+  --tds-cli-arguments, --tdsCliArguments  TDS CLI arguments (legacy mode).
+
+Arguments:
+  tds-cli                                 TDS-CLI execution mode.
 ```
 
-## `action = getID`
+| Argumentos | Uso |
+| -|------|
+| `tds-cli` | Executa em modo de compatibilidade com o **TDScli-Eclipse**.|
 
-Obtém o ID para a chave de compilação.
+| Opções | Uso |
+| -| -|
+| \<options> | Opções de [uso geral](#generalOptions). |
+| --tds-cli-arguments | Argumentos compátiveis com o **TDScli-Eclipse**|
 
-### Exemplo
+# Compatibilidade com **TDScli-Eclipse**
 
-```ini
-[getID]
-action=getID
-```
+Para utilizar o modo de compatibilidade com **TDScli-Eclipse** usamos arquivos de _script_ (batch/bash), específicos para cada sistema operacional, e apenas uma **ação pode ser chamada por execução**:
 
-### Retorno
+> Os _script_ estão disponíveis no repositório [GitHub](./legado).
 
-```
-ID: ED75-E184
-```
+| Sistema Operacional | Sintaxe |
+| - | - | 
+| Windows | `> TDScli.bat <action> <parâmetros_da_ação>` |
+| Linux | `> ./TDScli.sh <action> <parâmetros_da_ação>` |
+| Mac OS | `> ./TDScli.sh <action> <parâmetros_da_ação>` |
 
-## `action = authorization`
+## Usando parâmetros em linha de comando
 
-Aplica o token de compilação (Harpia) ou chave de compilação.
+`> TDScli.bat <action> <parametro_da_acao_1> <parametro_da_acao_2> <parametro_da_acao_3>...`
 
-> O **token de compilação** é de uso exclusivo da TOTVS para o Appserver Harpia.
+## Usando parâmetros em arquivo
 
-| Parâmetro | Valor               | Descrição                    |
-| --------- | ------------------- | ---------------------------- |
-| authtoken | Token de compilação | Define o token de compilação |
-
-```ini
-[authorization]
-action=authorization
-authtoken=<token de compilação>
-```
-
-> O **ID** do TDSCli-LS é diferente do TDSCLi-Eclipse, tornando as **chaves de compilação** incompatíveis.
-
-| Parâmetro     | Valor                                   | Descrição                                  |
-| ------------- | --------------------------------------- | ------------------------------------------ |
-| authorization | Caminho relativo ou absoluto do arquivo | Define o arquivo com a chave de compilação |
-
-```ini
-[authorization]
-action=authorization
-authorization=/home/mansano/tdscli/ED75-E184.aut
-```
-
-> Em caso de erro na carga do arquivo, confirme o ID da estação de trabalho, utilizando a action **getID**.
-
-## `action = authentication`
-
-Executa a conexão com o AppServer.
-
-| Parâmetro   | Valor             | Descrição                                                              |
-| ----------- | ----------------- | ---------------------------------------------------------------------- |
-| server      | IP                | Endereço do AppServer                                                  |
-| port        | numérico          | Porta em que o AppServer escuta                                        |
-| secure      | 1 ou 0            | Se a conexão é segura ou não, 1=Conexão segura, 0=Conexão convencional |
-| build       | _build_ ou _AUTO_ | Release do AppServer ou AUTO para detecção automática                  |
-| user        | "nome de usuário" | Usuário para autenticação                                              |
-| psw         | "senha"           | Senha para autenticação                                                |
-| environment | "ambiente"        | Ambiente na qual será efetuada a autenticação                          |
-
-### Exemplo
-
-```ini
-[authentication]
-action=authentication
-server=192.168.0.198
-port=5025
-secure=0
-build=AUTO
-environment=producao
-user=admin
-psw=
-```
-
-### Retorno
-
-```
-[LOG] Appserver detected with build version: 7.00.170117A and secure: 0
-[LOG] Starting connection to the server 'tdscli.serverName' (192.168.0.198@5025)
-[LOG] Connection to the server 'tdscli.serverName' finished.
-[LOG] Starting user 'admin' authentication.
-[LOG] Authenticating...
-[LOG] User authenticated successfully.
-[LOG] User 'admin' authentication finished.
-```
-
-## `action = compile`
-
-Executa a compilação/recompilação de programas no RPO.
-
-> Esta action depende da **action authentication**.
-
-> Se for executar uma compilação que necessite do uso da **chave de compilação** crie a seção com a **action `authorization`** antes desta.
-
-| Parâmetro   | Valor                                                       | Descrição                                                                                                                                                                   |
-| ----------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| program     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Programas a serem processados                                                                                                                                               |
-| programList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**)                                                              |
-| recompile   | True (T) ou False (F)                                       | True se deve efetuar recompilação                                                                                                                                           |
-| includes    | Diretórios com includes separados por `,` ou `;`            | Arquivos de includes, **O caminho para os diretórios de include deve sempre ser absoluto, ex: c:\dir\includes pois será utilizado pelo AppServer no momento da compilação** |
-
-> Informar a opção `program` ou `programList` **mas não ambas**.
-
-### Exemplo
-
-```ini
-[compile]
-action=compile
-program=/home/mansano/tdscli/src/prog1.prw,/home/mansano/tdscli/src/prog2.prw
-recompile=T
-includes=/home/mansano/_c/lib120/src/include/
-```
-
-### Retorno
-
-```
-[INFO] Starting recompile.
-[LOG] Starting build for environment producao.
-[LOG] Start recompile of 2 files.
-[LOG] Start regular compiling /home/mansano/tdscli/src/prog1.prw (1/2).
-[LOG] [SUCCESS] Source /home/mansano/tdscli/src/prog1.prw compiled successfully.
-[LOG] Start regular compiling /home/mansano/tdscli/src/prog2.prw (2/2).
-[LOG] [SUCCESS] Source /home/mansano/tdscli/src/prog2.prw compiled successfully.
-[LOG] Committing end build.
-[LOG] All files compiled successfully.
-[INFO] Recompile finished.
-```
-
-## `action = patchGen`
-
-Executa a geração de patch.
-
-> Esta action depende da **action authentication**.
-
-| Parâmetro        | Valor                                                       | Descrição                                                                                                      |
-| ---------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| saveLocal        | Caminho relativo ou absoluto do arquivo                     | Diretório onde será gerado o patch localmente                                                                  |
-| saveRemote       | Caminho relativo                                            | Diretório onde será gerado o patch remotamente (AppServer)                                                     |
-| fileResource     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Fontes e Recursos a serem processados                                                                          |
-| fileResourceList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**) |
-| patchType        | PTM, UPD ou PAK                                             | Extensões permitidas para arquivos de patches                                                                  |
-
-> Informar a opção `saveLocal` ou `saveRemote` **mas não ambas**.
-
-> Informar a opção `fileResource` ou `fileResourceList` **mas não ambas**.
-
-### Exemplo
-
-```ini
-[patchGen]
-action=patchGen
-fileResource=prog1,prog2
-patchType=PTM
-saveLocal=/home/mansano/tdscli/patch/
-```
-
-### Retorno
-
-```
-[INFO] Starting generate patch.
-[LOG] Starting build for environment producao.
-[LOG] Patch generated successfully.
-[LOG] Patch sent from appserver to user machine.
-[LOG] Cleaning up appserver OK.
-[LOG] Committing end build.
-[INFO] Generate patch finished.
-```
-
-## `action = patchApply`
-
-Efetua a aplicação de patch.
-
-> Esta action depende da **action authentication**.
-
-| Parâmetro       | Valor                                   | Descrição                                                                                             |
-| --------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| patchFile       | Caminho relativo ou absoluto do arquivo | Arquivo de patch a ser aplicado                                                                       |
-| localPatch      | True (T) ou False (F)                   | **True** se o arquivo de patch é local ou **False** se o arquivo estiver em um diretório no AppServer |
-| validatePatch   | True (T) ou False (F)                   | True para validação do patch                                                                          |
-| applyOldProgram | True (T) ou False (F)                   | True para aplicação de programas com data de compilação mais antigas que as existentes no RPO         |
-
-### Exemplo
-
-```ini
-[patchApply]
-action=patchApply
-patchFile=/home/mansano/tdscli/patch/tttp120.ptm
-localPatch=True
-applyOldProgram=True
-```
-
-### Retorno
-
-```
-[INFO] Starting apply patch.
-[LOG] Starting build for environment producao.
-[LOG] Applying patch file: /home/mansano/tdscli/patch/tttp120.ptm
-[LOG] Patch (tttp120.ptm) successfully applied.
-[LOG] Committing end build.
-[INFO] Apply patch finished.
-```
-
-## `action = [patchInfo]`
-
-Obtém as informações de um patch.
-
-> Esta action depende da **action authentication**.
-
-| Parâmetro  | Valor                                   | Descrição                                                                                             |
-| ---------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| patchFile  | Caminho relativo ou absoluto do arquivo | Arquivo de patch a ser analisado                                                                      |
-| localPatch | True (T) ou False (F)                   | **True** se o arquivo de patch é local ou **False** se o arquivo estiver em um diretório no AppServer |
-| output     | Caminho relativo ou absoluto do arquivo | Arquivo com as informações contidas no patch                                                          |
-
-### Exemplo
-
-```ini
-[patchInfo]
-action=patchInfo
-patchFile=/home/mansano/tdscli/patch/tttp120.ptm
-output=/home/mansano/tdscli/patch/tttp120.out
-localPatch=True
-```
-
-### Retorno
-
-```
-[INFO] Starting patch info.
-[LOG] Patch file: /home/mansano/tdscli/patch/tttp120.ptm
-[LOG] Starting build for environment producao.
-[LOG] Committing end build.
-[INFO] Patch info finished.
-```
-
-## `action = deleteProg`
-
-Remove programas do RPO conectado.
-
-> Esta action depende da **action authentication**.
-
-> Se for executar uma remoção que necessite do uso da **chave de compilação** crie a seção com a **action `authorization`** antes desta.
-
-| Parâmetro   | Valor                                                       | Descrição                                                                                                      |
-| ----------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| program     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Programas a serem processados                                                                                  |
-| programList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**) |
-
-> Informar a opção `program` ou `programList` **mas não ambas**.
-
-### Exemplo
-
-```ini
-[deleteProg]
-action=deleteProg
-program=prog1.prw
-```
-
-### Retorno
-
-```
-[INFO] Starting program deletion.
-[LOG] Starting build for environment producao.
-[LOG] All programs successfully deleted from RPO.
-[LOG] Committing end build.
-[INFO] Program deletion finished.
-```
-
-## `action = defragRPO`
-
-Executa a desfragmentação do RPO.
-
-> Esta action depende da **action authentication**.
-
-### Exemplo
-
-```ini
-[defragRPO]
-action=defragRPO
-```
-
-### Retorno
-
-```
-[INFO] Starting RPO defragmentation.
-[LOG] Starting build for environment producao.
-[WARN] This process may take a while.
-[LOG] RPO successfully defragged.
-[LOG] Committing end build.
-[INFO] RPO defragmentation finished.
-```
-
-## <a name="compatibilidade_legado"></a>Compatibilidade (legado)
-
-Para utilizar o modo de compatibilidade com **TDSCLi-Eclipse** usaremos arquivos de script (batch/bash), específicos para cada sistema operacional, e apenas uma **action pode ser chamada por execução**:
-
-> Windows: `> tdscli.bat <action> <parâmetros_da_ação>`
-
-> Linux: `> ./tdscli.sh <action> <parâmetros_da_ação>`
-
-> Mac OS: `> ./tdscli.sh <action> <parâmetros_da_ação>`
-
-### Usando parâmetros em linha de comando
-
-`> tdscli.bat <action> <parametro_da_acao_1> <parametro_da_acao_2> <parametro_da_acao_3>...`
-
-### Usando parâmetros em arquivo
-
-`> tdscli.bat <action> @parametros_da_acao.txt`
+`> TDScli.bat <action> @parametros_da_acao.txt`
 
 > Os parâmetros obrigatórios **dependem da action**, porém em todas as actions os parâmetros de conexão da **action authentication** devem ser informados.
 
-### Exemplo usando **parâmetros em linha de comando**
+## Exemplo usando **parâmetros em linha de comando**
 
-`> tdscli.bat compile serverType=AdvPL server=localhost port=1234 build=7.00.170117A environment=env user=user psw=pass includes=D:/servers/protheus/includes program=D:/fontes/advpl/prg_0001.prw;D:/fontes/advpl/prg_0002.prw;D:/fontes/advpl/prg_0003.prw authorization=D:/chave_compilacao/chave.aut recompile=t`
+`> TDScli.bat compile serverType=AdvPL server=localhost port=1234 build=7.00.170117A environment=env user=user psw=pass includes=D:/servers/protheus/includes program=D:/fontes/advpl/prg_0001.prw;D:/fontes/advpl/prg_0002.prw;D:/fontes/advpl/prg_0003.prw authorization=D:/chave_compilacao/chave.aut recompile=t`
 
-### Exemplo usando **parâmetros em arquivo**
+## Exemplo usando **parâmetros em arquivo**
 
-`> tdscli.bat compile @compile.txt`
+`> TDScli.bat compile @compile.txt`
 
 ```ini
 ;compile.txt
-;Exemplo de arquivo de execução para o TDSCLi (legado)
+;Exemplo de arquivo de execução para o TDScli (legado)
 
 ;parametros da acao authentication
 serverType=AdvPL
