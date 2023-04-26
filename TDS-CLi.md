@@ -46,7 +46,7 @@ Options:
   --wait-for-attach <seconds>   Wait <seconds> to start execution. Debug
                                 purpose only.
   --verbose <level>             Verbose execution.
-  --log-all-to-stderr           Forward all messages to stderr (error console
+  --log-all-to-stderr           Forward all messages (Except INFO messages) to stderr (error console
                                 standard).
   --log-file <filename>         Log file.
   --log-file-append <filename>  Log append file.
