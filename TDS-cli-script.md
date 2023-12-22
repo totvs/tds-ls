@@ -1,10 +1,14 @@
 # TDS-CLI Arquivo de execução (_script_)
 
+O TDS-CLI necessita de um arquivo de execução (_script_) contendo as informações das ações que ele deverá executar ao ser invocado.
+
+## Informações gerais
+
 **ATENÇÃO**: Este arquivo deve ter o formato ANSI (CP1252). Caso contrário poderá ocorrer erro na sua execução.
 
-Recomendamos o uso de um arquivo de execução com a extensão **.INI**, pois editores como o próprio VSCode farão seu _syntax highlight_, facilitando o desenvolvimento.
+**RECOMENDAÇÃO**: Prefira o uso de um arquivo de execução com a extensão **.INI**, pois editores como o próprio VSCode farão seu _syntax highlight_, facilitando o desenvolvimento.
 
-## Características do arquivo de execução
+### Características do arquivo de execução
 
 - Formato ANSI (CP1252);
 - As marcações "`#`" ou "`;`" representam os comentários do arquivo de execução;
@@ -20,12 +24,13 @@ action = defragRPO
 ```
 
 - **Importante**: Duas seções **não devem ser declaradas** no arquivo de execução como subdivisão customizada:
-  - `[geral] -> apenas para uso interno`
-  - `[user] -> onde definimos as variáveis de ambiente`
 
-## Usando caminhos relativos ou absolutos
+    - `[general] -> apenas para uso interno`
+    - `[user] -> onde definimos as variáveis de ambiente`
 
-Quando for necessário "apontar" para um arquivo, como um _patch_ por exemplo, você poderá fazer uso de caminhos absolutos:
+### Usando caminhos relativos ou absolutos
+
+Quando for necessário indicar um arquivo, como um _patch_ por exemplo, você poderá fazer uso de caminhos absolutos:
 
 > **Windows:** `C:\dir\file.ptm` **ou Linux:** `/home/user/dir/file.ptm`
 
@@ -33,7 +38,7 @@ Ou utilizar caminhos relativos ao diretório do seu arquivo de execução:
 
 > **Windows:** `dir\file.ptm` **ou Linux:** `dir/file.ptm`
 
-Prefira usar **caminhos absolutos**, garantindo a correta localização dos arquivos.
+**RECOMENDAÇÃO**: Prefira usar **caminhos absolutos**, garantindo a correta localização dos arquivos.
 
 Você pode utilizar a barra **`/`** como separador de diretórios independentemente do seu sistema operacional.
 
@@ -42,9 +47,11 @@ Você pode utilizar a barra **`/`** como separador de diretórios independenteme
 - Utilize apenas **caracteres minúsculos** na composição do diretorio/arquivo.ext;
 - **Não utilize acentuação** na composição diretorio/arquivo.ext.
 
-## Exemplo
+### Exemplo de arquivo de execução
 
 Agora que conhecemos o arquivo de execução vamos ver um exemplo:
+
+#### Exemplo
 
 ```ini
 ; logToFile: diretorio/arquivo para arquivar log da execução
@@ -65,7 +72,7 @@ secure=0
 build=7.00.170117A
 environment=producao
 user=admin
-psw=
+psw=****
 
 ; Compilando dois fontes
 [compile]
@@ -75,9 +82,9 @@ recompile=T
 includes=${INCLUDE_DIR}
 ```
 
-### Retorno
+#### Retorno
 
-```
+```log
 [LOG] Starting connection to the server 'TDScli.serverName' (192.168.0.198@5025)
 [LOG] Connection to the server 'TDScli.serverName' finished.
 [LOG] Starting user 'admin' authentication.
@@ -96,16 +103,18 @@ includes=${INCLUDE_DIR}
 [INFO] Recompile finished.
 ```
 
-## Parâmetros gerais
+## Seções de configuração
 
-Os parâmetros gerais devem sempre ser inseridos no **início do arquivo** de execução.
+### Parâmetros gerais
+
+Os parâmetros gerais devem sempre ser inseridos no **início do arquivo** do script de execução.
 
 | Parâmetro         | Valor                 | Descrição                                                  |
 | ----------------- | --------------------- | ---------------------------------------------------------- |
 | logToFile         | diretorio/arquivo.log | Arquivo que receberá as informações da execução do arquivo |
-| showConsoleOutput | True (T) ou False (F) | True = Exibe informações no console                        |
+| showConsoleOutput | True (T) ou False (F) | Exibe ou não exibe informações no console                  |
 
-### Exemplo
+#### Exemplo - Parâmetros gerais
 
 ```ini
 ; logToFile: diretorio/arquivo para arquivar log da execução
@@ -114,13 +123,13 @@ logToFile=/home/mansano/TDScli/logs/log1.log
 showConsoleOutput=true
 ```
 
-## Seção `[user]`
+### Seção `[user]`
 
 Na seção `[user]` definimos as variáveis de ambiente, que podem ser usadas em todas as seções do arquivo de execução.
 
 > Para utilização da variável de ambiente use a macro `${var_name}`
 
-### Exemplo
+#### Exemplo `[user]`
 
 ```ini
 [user]
@@ -131,24 +140,37 @@ action=compile
 includes=${INCLUDE_DIR}
 ```
 
-## Seções de usuário
+## Seções de execução
 
 As seções permitem **organizar** seu arquivo de execução, para seu nome é permitido uso de espaços e caracteres especiais.
 
-### Exemplo
+### Exemplo básico
 
 ```ini
 [compilação de arquivos]
 action=compile
+...
 ```
 
 A execução do **arquivo é sequencial**, percorrendo todas as seções cadastradas.
 
-> O parâmetro **`skip=True`** utilizado em uma seção permite ignorar sua execução, isso pode ser util caso necessite reaproveitar o mesmo arquivo de execução para várias finalidades.
+> O parâmetro **`skip=True`** utilizado em uma seção permite ignorar sua execução, isso pode ser util caso necessite reaproveitar o mesmo arquivo de execução para várias finalidades.</br>
+> </br>
+> Cada seção deve conter apenas uma **`action`**, que serão explicadas a seguir.
 
-> Cada seção contém uma **`action`**, explicadas a seguir.
+No exemplo a seguir a ação de compilação não será executada, pois está marcada como `skip`.
 
-## `action = validate`
+### Exemplo `skip`
+
+```ini
+[compilação de arquivos]
+skip=true
+action=compile
+```
+
+## Ações de execução (`action`)
+
+### `action = validate`
 
 Obtém a versão de _release_ do AppServer, permitindo seu uso na tag **build** da **action authentication**.
 
@@ -156,43 +178,31 @@ Obtém a versão de _release_ do AppServer, permitindo seu uso na tag **build** 
 | --------- | -------- | ---------------------------------------------------------------------- |
 | server    | IP       | Endereço IP do AppServer                                               |
 | port      | numérico | Porta do AppServer                                                     |
-| secure    | 1 ou 0   | Se a conexão é segura ou não, 1=Conexão segura, 0=Conexão convencional |
 
-### Exemplo
+Informações do retorno da validação.
+
+| Parâmetro | Valor        | Descrição                                                              |
+| --------- | ------------ | ---------------------------------------------------------------------- |
+| build     | 7.00.170117A | Build do AppServer validado                                            |
+| secure    | 1 ou 0       | Se a conexão é segura ou não, 1=Conexão segura, 0=Conexão convencional |
+
+#### Exemplo `action = validate`
 
 ```ini
 [validate]
 action=validate
 server=192.168.0.198
 port=5025
-secure=0
 ```
 
-### Retorno
+#### Retorno `action = validate`
 
-```
+```log
 [LOG] Appserver detected with build version: 7.00.170117A and secure: 0
 build: 7.00.170117A / secure: 0
 ```
 
-## `action = getID`
-
-Obtém o ID para a chave de compilação.
-
-### Exemplo
-
-```ini
-[getID]
-action=getID
-```
-
-### Retorno
-
-```
-ID: ED75-E184
-```
-
-## `action = authorization`
+### `action = authorization`
 
 Aplica o token de compilação (Harpia) ou chave de compilação.
 
@@ -208,6 +218,8 @@ action=authorization
 authtoken=<token de compilação>
 ```
 
+#### Deprecated - O uso da **chave de compilação** deve ser substituida pela utilização do **token de compilação**
+
 > O **ID** do TDScli-LS é diferente do TDScli-Eclipse, tornando as **chaves de compilação** incompatíveis.
 
 | Parâmetro     | Valor                                   | Descrição                                  |
@@ -222,7 +234,7 @@ authorization=/home/mansano/TDScli/ED75-E184.aut
 
 > Em caso de erro na carga do arquivo, confirme o ID da estação de trabalho, utilizando a action **getID**.
 
-## `action = authentication`
+### `action = authentication`
 
 Executa a conexão com o AppServer.
 
@@ -236,7 +248,7 @@ Executa a conexão com o AppServer.
 | psw         | "senha"           | Senha para autenticação                                                |
 | environment | "ambiente"        | Ambiente na qual será efetuada a autenticação                          |
 
-### Exemplo
+#### Exemplo `action = authentication`
 
 ```ini
 [authentication]
@@ -250,9 +262,9 @@ user=admin
 psw=
 ```
 
-### Retorno
+#### Retorno `action = authentication`
 
-```
+```log
 [LOG] Appserver detected with build version: 7.00.170117A and secure: 0
 [LOG] Starting connection to the server 'TDScli.serverName' (192.168.0.198@5025)
 [LOG] Connection to the server 'TDScli.serverName' finished.
@@ -262,13 +274,13 @@ psw=
 [LOG] User 'admin' authentication finished.
 ```
 
-## `action = compile`
+### `action = compile`
 
 Executa a compilação/recompilação de programas no RPO.
 
-> Esta action depende da **action authentication**.
-
-> Se for executar uma compilação que necessite do uso da **chave de compilação** crie a seção com a **action `authorization`** antes desta.
+> Esta action depende da **action authentication**.</br>
+> </br>
+> Se for executar uma compilação que necessite do uso do **token de compilação** crie a seção com a **action `authorization`** antes desta ação.
 
 | Parâmetro   | Valor                                                       | Descrição                                                                                                                                                                   |
 | ----------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -279,7 +291,7 @@ Executa a compilação/recompilação de programas no RPO.
 
 > Informar a opção `program` ou `programList` **mas não ambas**.
 
-### Exemplo
+#### Exemplo `action = compile`
 
 ```ini
 [compile]
@@ -289,9 +301,9 @@ recompile=T
 includes=/home/mansano/_c/lib120/src/include/
 ```
 
-### Retorno
+#### Retorno `action = compile`
 
-```
+```log
 [INFO] Starting recompile.
 [LOG] Starting build for environment producao.
 [LOG] Start recompile of 2 files.
@@ -304,11 +316,13 @@ includes=/home/mansano/_c/lib120/src/include/
 [INFO] Recompile finished.
 ```
 
-## `action = patchGen`
+### `action = patchGen`
 
-Executa a geração de patch.
+Executa a geração de um patch.
 
-> Esta action depende da **action authentication**.
+> Esta action depende da **action authentication**.</br>
+> </br>
+> Se for executar uma geração que necessite do uso do **token de compilação** crie a seção com a **action `authorization`** antes desta ação.
 
 | Parâmetro        | Valor                                                       | Descrição                                                                                                      |
 | ---------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -318,11 +332,11 @@ Executa a geração de patch.
 | fileResourceList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**) |
 | patchType        | PTM, UPD ou PAK                                             | Extensões permitidas para arquivos de patches                                                                  |
 
-> Informar a opção `saveLocal` ou `saveRemote` **mas não ambas**.
-
+> Informar a opção `saveLocal` ou `saveRemote` **mas não ambas**.</br>
+> </br>
 > Informar a opção `fileResource` ou `fileResourceList` **mas não ambas**.
 
-### Exemplo
+#### Exemplo `action = patchGen`
 
 ```ini
 [patchGen]
@@ -332,9 +346,9 @@ patchType=PTM
 saveLocal=/home/mansano/TDScli/patch/
 ```
 
-### Retorno
+#### Retorno `action = patchGen`
 
-```
+```log
 [INFO] Starting generate patch.
 [LOG] Starting build for environment producao.
 [LOG] Patch generated successfully.
@@ -344,9 +358,11 @@ saveLocal=/home/mansano/TDScli/patch/
 [INFO] Generate patch finished.
 ```
 
-## `action = patchApply`
+### `action = patchValidate`
 
-Efetua a aplicação de patch.
+Efetua apenas a validação de um patch, sem efetuar sua aplicação.
+
+Caso a validação acuse alguma problema, o retorno da execução do batch será diferente de 0 (zero).
 
 > Esta action depende da **action authentication**.
 
@@ -354,10 +370,57 @@ Efetua a aplicação de patch.
 | --------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | patchFile       | Caminho relativo ou absoluto do arquivo | Arquivo de patch a ser aplicado                                                                       |
 | localPatch      | True (T) ou False (F)                   | **True** se o arquivo de patch é local ou **False** se o arquivo estiver em um diretório no AppServer |
-| validatePatch   | True (T) ou False (F)                   | True para validação do patch                                                                          |
+
+#### Exemplo `action = patchValidate`
+
+```ini
+[patchValidate]
+action=patchValidate
+patchFile=/home/mansano/TDScli/patch/tttp120.ptm
+localPatch=True
+```
+
+#### Retorno `action = patchValidate`
+
+```log
+[INFO] Starting patch validate.
+[INFO] Patch file: /home/mansano/TDScli/patch/tttp120.ptm
+[INFO] Starting build for environment producao.
+[INFO] Starting build using RPO token ...
+[WARN] Patch validated with problems. There are resources in patch file older than RPO.
+[INFO] Aborting end build (rollback changes).
+[INFO] Starting reconnection to the server 'tdscli.serverName_rpc'
+[INFO] Authenticating...
+[INFO] User authenticated successfully.
+[INFO] Reconnection to the server 'tdscli.serverName_rpc' finished.
+[INFO] Starting validating a package in Protheus application.
+[INFO] Package validated in Protheus application without problems.
+[INFO] Validating a package in Protheus application finished.
+[INFO] Server 'tdscli.serverName_rpc' successfully disconnected.
+[INFO] Patch validate finished.
+[WARN] Outdated sources and/or resources detected.
+[INFO] File     Date Patch      Date RPO
+[INFO] APDA020.PRX      06/10/2023 14:08:26     10/11/2023 11:07:03
+[INFO] APTA100APIB.PRW  27/09/2023 18:17:34     30/11/2023 16:16:49
+...
+[INFO] TRMA060_PT-BR.TRES       25/06/2021 02:24:04     01/09/2023 02:29:25
+
+tdscli batch error [5]!!!
+```
+
+### `action = patchApply`
+
+Efetua a aplicação de um patch.
+
+> Esta action depende da **action authentication**.
+
+| Parâmetro       | Valor                                   | Descrição                                                                                             |
+| --------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| patchFile       | Caminho relativo ou absoluto do arquivo | Arquivo de patch a ser aplicado                                                                       |
+| localPatch      | True (T) ou False (F)                   | **True** se o arquivo de patch é local ou **False** se o arquivo estiver em um diretório no AppServer |
 | applyOldProgram | True (T) ou False (F)                   | True para aplicação de programas com data de compilação mais antigas que as existentes no RPO         |
 
-### Exemplo
+#### Exemplo `action = patchApply`
 
 ```ini
 [patchApply]
@@ -367,9 +430,9 @@ localPatch=True
 applyOldProgram=True
 ```
 
-### Retorno
+#### Retorno `action = patchApply`
 
-```
+```log
 [INFO] Starting apply patch.
 [LOG] Starting build for environment producao.
 [LOG] Applying patch file: /home/mansano/TDScli/patch/tttp120.ptm
@@ -378,7 +441,7 @@ applyOldProgram=True
 [INFO] Apply patch finished.
 ```
 
-## `action = [patchInfo]`
+### `action = patchInfo`
 
 Obtém as informações de um patch.
 
@@ -390,7 +453,7 @@ Obtém as informações de um patch.
 | localPatch | True (T) ou False (F)                   | **True** se o arquivo de patch é local ou **False** se o arquivo estiver em um diretório no AppServer |
 | output     | Caminho relativo ou absoluto do arquivo | Arquivo com as informações contidas no patch                                                          |
 
-### Exemplo
+#### Exemplo `action = patchInfo`
 
 ```ini
 [patchInfo]
@@ -400,9 +463,9 @@ output=/home/mansano/TDScli/patch/tttp120.out
 localPatch=True
 ```
 
-### Retorno
+#### Retorno `action = patchInfo`
 
-```
+```log
 [INFO] Starting patch info.
 [LOG] Patch file: /home/mansano/TDScli/patch/tttp120.ptm
 [LOG] Starting build for environment producao.
@@ -410,13 +473,13 @@ localPatch=True
 [INFO] Patch info finished.
 ```
 
-## `action = deleteProg`
+### `action = deleteProg`
 
 Remove programas do RPO conectado.
 
-> Esta action depende da **action authentication**.
-
-> Se for executar uma remoção que necessite do uso da **chave de compilação** crie a seção com a **action `authorization`** antes desta.
+> Esta action depende da **action authentication**.</br>
+> </br>
+> Se for executar uma remoção que necessite do uso do **token de compilação** crie a seção com a **action `authorization`** antes desta.
 
 | Parâmetro   | Valor                                                       | Descrição                                                                                                      |
 | ----------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -425,7 +488,7 @@ Remove programas do RPO conectado.
 
 > Informar a opção `program` ou `programList` **mas não ambas**.
 
-### Exemplo
+#### Exemplo `action = deleteProg`
 
 ```ini
 [deleteProg]
@@ -433,9 +496,9 @@ action=deleteProg
 program=prog1.prw
 ```
 
-### Retorno
+#### Retorno `action = deleteProg`
 
-```
+```log
 [INFO] Starting program deletion.
 [LOG] Starting build for environment producao.
 [LOG] All programs successfully deleted from RPO.
@@ -443,26 +506,49 @@ program=prog1.prw
 [INFO] Program deletion finished.
 ```
 
-## `action = defragRPO`
+### `action = defragRPO`
 
 Executa a desfragmentação do RPO.
 
 > Esta action depende da **action authentication**.
 
-### Exemplo
+#### Exemplo `action = defragRPO`
 
 ```ini
 [defragRPO]
 action=defragRPO
 ```
 
-### Retorno
+#### Retorno `action = defragRPO`
 
-```
+```log
 [INFO] Starting RPO defragmentation.
 [LOG] Starting build for environment producao.
 [WARN] This process may take a while.
 [LOG] RPO successfully defragged.
 [LOG] Committing end build.
 [INFO] RPO defragmentation finished.
+```
+
+## Ações de execução `deprecated`
+
+Estas ações devem ser substituidas e podem ser removidas a qualquer momento.
+
+### `action = getID` 
+
+> Atenção: As chaves de compilação foram substituidas pelos tokens de compilação a partir dos AppServer Harpia.
+
+Obtém o ID para a chave de compilação.
+
+#### Exemplo `action = getID`
+
+```ini
+[getID]
+action=getID
+```
+
+#### Retorno `action = getID`
+
+```log
+ID: ED75-E184
 ```
