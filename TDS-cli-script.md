@@ -331,6 +331,7 @@ Executa a geração de um patch.
 | fileResource     | Nomes dos arquivos e/ou diretórios separados por `,` ou `;` | Fontes e Recursos a serem processados                                                                          |
 | fileResourceList | Caminho relativo ou absoluto do arquivo                     | Arquivo contendo os nomes dos arquivos (**fontes ou recursos**) a serem processados (**um arquivo por linha**) |
 | patchType        | PTM, UPD ou PAK                                             | Extensões permitidas para arquivos de patches                                                                  |
+| patchName        | O nome do patch a ser gerado                                | Caso não informado, será gerado com o nome padrão para o tipo escolhido                                        |
 
 > Informar a opção `saveLocal` ou `saveRemote` **mas não ambas**.</br>
 > </br>
