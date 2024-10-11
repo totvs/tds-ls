@@ -1,15 +1,15 @@
 # TDS-CLI (LS)
 
-O _**TDSCLI-LS**_ (_**C**ommand **L**ne **I**nterface_ **L**anguage **S**erver) é uma ferramenta do ecossistema **TOTVS Protheus** que permite ações como a compilação e aplicação de patchs via linha de comando.
+O _**TDSCLI-LS**_ (_**C**ommand **L**ine **I**nterface_ **L**anguage **S**erver) é uma ferramenta do ecossistema **TOTVS Protheus** que permite ações como a compilação e aplicação de patchs via linha de comando.
 
 ## Obtendo a ferramenta
 
 ### A partir do GitHub
 
-Acesse a página de (Liberações)[https://github.com/totvs/tds-ls/releases], localize a versão desejada e salva o pacote do executável adequado ao seu sistema operacional.
+Acesse a página de [Liberações](https://github.com/totvs/tds-ls/releases), localize a versão desejada e salva o pacote do executável adequado ao seu sistema operacional.
 
-> Não há processo de instalação. Os binários são portáteis.
-
+> Não há processo de instalação. Os binários são portáteis.</br>
+> </br>
 > Para uso em modo legado (compátivel com **TDScli-Eclipse**), use também os arquivos de [comandos em lote](./legado).
 
 ### NodeJS
@@ -24,17 +24,17 @@ Associado a um projeto específico:
 
 Via extensão TDS-VSCode
 
-O **AdvPLS**, também está disponível no diretório da extensão do **TDS-VSCode** para os três sistemas operacionais homologados, conforme exemplo abaixo.
+O **AdvpLS**, também está disponível no diretório da extensão do **TDS-VSCode** para os três sistemas operacionais homologados, conforme exemplo abaixo.
 
 ![Advpl-dir](./images/advpls_dirs.png)
 
 > Mais informações sobre a extensão [TDS-VSCode](https://marketplace.visualstudio.com/items?itemName=totvs.tds-vscode).
 
-## Utilizando o AdvPLS
+## Utilizando o AdvpLS
 
 ### Modos de execução
 
-```
+```log
 > advpls
 Usage: advpls.exe [options] mode
 Performs the LS actions via command line interface (CLI).
@@ -59,27 +59,27 @@ Arguments:
                                 (language-server|cli|appre|tds-cli).
 ```
 
-| Argumentos | Uso |
-| - | -|
-| `mode`| Indica como o `advpls` será utilizado.|
-| | `language-server`, como servidor em segundo plano, usando protocolo LS e comunicação via `stdin` e `stdout`.|
-| | `cli`, executa arquivos de (_script_)[TDS-cli-script.md] que contém uma sequência de ações.|
-| | `appre`, executa processo de pré-compilação, sem depender de um servidor Protheus (ações limitadas).|
-| | `tds-cli`, executa em modo de compatibilidade com o **TDScli-Eclipse**.|
+| Argumentos | Uso                                                                                                          |
+| -          | -                                                                                                            |
+| `mode`     | Indica como o `advpls` será utilizado.                                                                       |
+|            | `language-server`, como servidor em segundo plano, usando protocolo LS e comunicação via `stdin` e `stdout`. |
+|            | `cli`, executa arquivos de [_script_](TDS-cli-script.md) que contém uma sequência de ações.                  |
+|            | `appre`, executa processo de pré-compilação, sem depender de um servidor Protheus (ações limitadas).         |
+|            | `tds-cli`, executa em modo de compatibilidade com o **TDScli-Eclipse**.                                      |
 
-> Estas opções são válidas para todos os modos de execução.
-
+> Estas opções são válidas para todos os modos de execução.</br>
+> </br>
 > Opções não documentadas ou com propósito de depuração, devem ter seu uso usados com cautela.
 
-| <a name="generalOptions">Opções | Uso geral (todos os modos) |
-| - | - |
-| -?, -h, --help| Apresenta descritivo das opções.|
-| -v, --version| Apresenta a versão.|
-| --verbose \<level>| Nível de informação a ser apresentada durante execução.|
-| --log-all-to-stderr| Envia todas as mensagens para a saída padrão de erro (console).|
-| --log-file <filename>| Arquivo de registro de ocorrências.|
-| --log-file-append| Indica que informações de nova execução devem ser anexadas as já existentes.|
-| --record| Habilita o detalhamento da comunicação.|
+| <a name="generalOptions">Opções</a> | Uso geral (todos os modos)                                                   |
+| -                                   | -                                                                            |
+| -?, -h, --help                      | Apresenta descritivo das opções.                                             |
+| -v, --version                       | Apresenta a versão.                                                          |
+| --verbose \<level>                  | Nível de informação a ser apresentada durante execução.                      |
+| --log-all-to-stderr                 | Envia todas as mensagens para a saída padrão de erro (console).              |
+| --log-file \<filename>              | Arquivo de registro de ocorrências.                                          |
+| --log-file-append                   | Indica que informações de nova execução devem ser anexadas as já existentes. |
+| --record                            | Habilita o detalhamento da comunicação.                                      |
 
 ## Modo _language-server_
 
@@ -87,7 +87,7 @@ A execução, normalmente, ocorre em segundo plano (_backgroud_), utilizando o c
 
 Pode ser utilizado em editores e _IDE_ que suportam o protocolo.
 
-```
+```log
 > advpls.exe language-server --help
 Usage: advpls.exe [options] language-server
 Performs the LS actions via command line interface (CLI).
@@ -105,18 +105,23 @@ Arguments:
   language-server                  Language Server(background) execution mode.
 ```
 
-| Argumentos | Uso |
-| - | - |
-| `language-server` | Como servidor em segundo plano, usando protocolo LS e comunicação via `stdin` e `stdout`.|
+| Argumentos        | Uso                                                                                       |
+| -                 | -                                                                                         |
+| `language-server` | Como servidor em segundo plano, usando protocolo LS e comunicação via `stdin` e `stdout`. |
 
-| Opção | Uso |
-| - | - |
-| \<options> | Opções de [uso geral](#generalOptions). |
-| --enable-auto-complete| Habilita o modo do auto-complementar pelo servidor.|
-| --notification-level \<level>| Nível das notificações a serem enviadas ao editor/IDE.<br>`none`, nenhuma notificação;<br>`only errors`, somente erros;<br>`errors and warnings`, erros e avisos;<br>`errors warnings and infos`, erros, avisos e informações;<br>`all`, informações detalhadas incluindo de depuração;|
-| --fs-encoding \<code-page>| Código de página utilizado pelo sistema de arquivos.<br>`CP1252`, `CP1251` ou `UTF-8`|
-| --includes \<includeList>| Lista de pastas para busca de arquivos de definição, separadas por ponto-e-vírgula (`;`).|
-| --linter| Habilita [pré análise]([https://github.com/totvs/tds-vscode/blob/master/docs/linter.md) de arquivos-fontes.|
+| Opção                         | Uso                                                                                                         |
+| -                             | -                                                                                                           |
+| \<options>                    | Opções de [uso geral](#generalOptions).                                                                     |
+| --enable-auto-complete        | Habilita o modo do auto-complementar pelo servidor.                                                         |
+| --notification-level \<level> | Nível das notificações a serem enviadas ao editor/IDE.                                                      |
+|                               | `none`, nenhuma notificação;                                                                                |
+|                               | `only errors`, somente erros;                                                                               |
+|                               | `errors and warnings`, erros e avisos;                                                                      |
+|                               | `errors warnings and infos`, erros, avisos e informações;                                                   |
+|                               | `all`, informações detalhadas incluindo de depuração;                                                       |
+| --fs-encoding \<code-page>    | Código de página utilizado pelo sistema de arquivos.<br>`CP1252`, `CP1251` ou `UTF-8`                       |
+| --includes \<includeList>     | Lista de pastas para busca de arquivos de definição, separadas por ponto-e-vírgula (`;`).                   |
+| --linter                      | Habilita [pré análise]([https://github.com/totvs/tds-vscode/blob/master/docs/linter.md) de arquivos-fontes. |
 
 ## Modo _cli_
 
@@ -126,7 +131,7 @@ A execução nesse modo permite executar múltiplas ações em uma única chamad
 - Compilação de um conjunto de fontes (**compile**);
 - Defrag do RPO (**defragRPO**)
 
-```
+```log
 W:\ws_tds_vscode\tds-ls\bin\windows>advpls.exe cli --help             
 Usage: advpls.exe [options] cli <scriptFile>
 Performs the LS actions via command line interface (CLI).
@@ -138,19 +143,20 @@ Arguments:
   scriptFile                   Script file.
 ```
 
-| Argumentos | Uso |
-| - | - |
-| `cli` | Executa arquivos de (_script_)[TDS-cli-script.md] que contém uma sequência de ações.|
+| Argumentos   | Uso                                                                                  |
+| -            | -                                                                                    |
+| `cli`        | Executa arquivos de [_script_](TDS-cli-script.md) que contém uma sequência de ações. |
+| `scriptFile` | Caminho onde está o arquivo de execução a ser invocado.                              |
 
-| Opção | Uso |
-| - | - |
+| Opção      | Uso                                     |
+| -          | -                                       |
 | \<options> | Opções de [uso geral](#generalOptions). |
 
 ## Modo _appre_
 
 A execução nesse modo permite efetuar um pré-processamento nos arquivos-fontes, compilando-o e gerando o arquivo intermediário `.ppo` ou equivalente. Esse modo não depende de conexão prévia a um _appServer_.
 
-```
+```log
 >advpls.exe appre --help 
 Usage: advpls.exe [options] appre source[,..]
 Performs the LS actions via command line interface (CLI).
@@ -164,22 +170,22 @@ Arguments:
   source                       Source (file or folder or @<sourceList.txt>).
 ```
 
-| Argumentos | Uso |
-| -|------|
-| `appre`| Executa processo de pré-compilação, sem depender de um servidor Protheus (ações limitadas).|
-| `source`| Lista de arquivos (ou pastas), separadas por vírgula (``,``).|
+| Argumentos | Uso                                                                                         |
+| ---------- | ------------------------------------------------------------------------------------------- |
+| `appre`    | Executa processo de pré-compilação, sem depender de um servidor Protheus (ações limitadas). |
+| `source`   | Lista de arquivos (ou pastas), separadas por vírgula (``,``).                               |
 
-| Opções | Uso |
-| -| -|
-| \<options> | Opções de [uso geral](#generalOptions). |
-| -I, -i <folder> | Pasta para busca de arquivos de definição.<br>Pode ser informada uma ou mais vezes. |  
-| -D, -d <define> | Define uma constante (similar a diretiva ``#define``) para determinar comportamentos e/ou isolamento de código, p.e. ``/DTOP``.<br>Pode ser informada uma ou mais vezes.
+| Opções           | Uso                                                                                 |
+| ---------------- | ----------------------------------------------------------------------------------- |
+| \<options>       | Opções de [uso geral](#generalOptions).                                             |
+| -I, -i \<folder> | Pasta para busca de arquivos de definição.<br>Pode ser informada uma ou mais vezes. |  
+| -D, -d \<define> | Define uma constante (similar a diretiva ``#define``) para determinar comportamentos e/ou isolamento de código, p.e. ``/DTOP``.<br>Pode ser informada uma ou mais vezes. |
 
 ## Modo _tds_cli_
 
 Executa TDScli-LS em modo de compatibilidade (legado) com o **TDScli-Eclipse**.
 
-```
+```log
 >advpls.exe tds-cli --help 
 Usage: advpls.exe [options] tds-cli
 Performs the LS actions via command line interface (CLI).
@@ -191,26 +197,26 @@ Arguments:
   tds-cli                                 TDS-CLI execution mode.
 ```
 
-| Argumentos | Uso |
-| -|------|
-| `tds-cli` | Executa em modo de compatibilidade com o **TDScli-Eclipse**.|
+| Argumentos | Uso                                                          |
+| ---------- | ------------------------------------------------------------ |
+| `tds-cli`  | Executa em modo de compatibilidade com o **TDScli-Eclipse**. |
 
-| Opções | Uso |
-| -| -|
-| \<options> | Opções de [uso geral](#generalOptions). |
-| --tds-cli-arguments | Argumentos compátiveis com o **TDScli-Eclipse**|
+| Opções              | Uso                                             |
+| -                   | -                                               |
+| \<options>          | Opções de [uso geral](#generalOptions).         |
+| --tds-cli-arguments | Argumentos compátiveis com o **TDScli-Eclipse** |
 
-# Compatibilidade com **TDScli-Eclipse**
+## Compatibilidade com **TDScli-Eclipse**
 
 Para utilizar o modo de compatibilidade com **TDScli-Eclipse** usamos arquivos de _script_ (batch/bash), específicos para cada sistema operacional, e apenas uma **ação pode ser chamada por execução**:
 
 > Os _script_ estão disponíveis no repositório [GitHub](./legado).
 
-| Sistema Operacional | Sintaxe |
-| - | - | 
-| Windows | `> TDScli.bat <action> <parâmetros_da_ação>` |
-| Linux | `> ./TDScli.sh <action> <parâmetros_da_ação>` |
-| Mac OS | `> ./TDScli.sh <action> <parâmetros_da_ação>` |
+| Sistema Operacional | Sintaxe                                       |
+| -                   | -                                             |
+| Windows             | `> TDScli.bat <action> <parâmetros_da_ação>`  |
+| Linux               | `> ./TDScli.sh <action> <parâmetros_da_ação>` |
+| Mac OS              | `> ./TDScli.sh <action> <parâmetros_da_ação>` |
 
 ## Usando parâmetros em linha de comando
 
